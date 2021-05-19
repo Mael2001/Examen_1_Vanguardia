@@ -50,44 +50,38 @@ namespace FinancialApp.API.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("/summary/expenses/{id}")]
+        [HttpGet("/summary/expenses")]
         public ActionResult<double> GetExpenses(int id)
         {
-            var account = _accountService.GetAccountById(id);
-            var expenses = _transactionService.GetExpensesById(id);
-            if (account.ResponseCode == ResponseCode.NotFound 
-                || expenses.ResponseCode == ResponseCode.NotFound)
+            var expenses = _transactionService.GetExpenses();
+            if (expenses.ResponseCode == ResponseCode.NotFound)
             {
-                return BadRequest(account.Error);
+                return BadRequest(expenses.Error);
             }
             
-            return Ok(expenses.Result * account.Result.ConversionRate);
+            return Ok(expenses.Result);
         }
         // GET api/values/5
-        [HttpGet("/summary/incomes/{id}")]
-        public ActionResult<double> GetIncomes(int id)
+        [HttpGet("/summary/incomes")]
+        public ActionResult<double> GetIncomes()
         {
-            var account = _accountService.GetAccountById(id);
-            var incomes = _transactionService.GetIncomesById(id);
-            if (account.ResponseCode == ResponseCode.NotFound
-                || incomes.ResponseCode == ResponseCode.NotFound)
+            var incomes = _transactionService.GetIncomes();
+            if (incomes.ResponseCode == ResponseCode.NotFound)
             {
-                return BadRequest(account.Error);
+                return BadRequest(incomes.Error);
             }
-            return Ok(incomes.Result * account.Result.ConversionRate);
+            return Ok(incomes.Result);
         }
         // GET api/values/5
-        [HttpGet("/summary/total/{id}")]
-        public ActionResult<double> GetTotal(int id)
+        [HttpGet("/summary/total")]
+        public ActionResult<double> GetTotal()
         {
-            var account = _accountService.GetAccountById(id);
-            var total = _transactionService.GetTotalById(id);
-            if (account.ResponseCode == ResponseCode.NotFound
-                || total.ResponseCode == ResponseCode.NotFound)
+            var total = _transactionService.GetTotal();
+            if (total.ResponseCode == ResponseCode.NotFound)
             {
-                return BadRequest(account.Error);
+                return BadRequest(total.Error);
             }
-            return Ok(total.Result * account.Result.ConversionRate);
+            return Ok(total.Result);
         }
         // POST api/values
         [HttpPost("/new/transaction")]
