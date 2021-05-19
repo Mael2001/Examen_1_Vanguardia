@@ -5,7 +5,7 @@ using FinancialApp.Core.Entities;
 
 namespace FinancialApp.Core.Interfaces
 {
-    interface ITransactionService
+    public interface ITransactionService
     {
         ServiceResult<IReadOnlyList<Transaction>> GetTransactions();
         ServiceResult<double> GetIncomes();

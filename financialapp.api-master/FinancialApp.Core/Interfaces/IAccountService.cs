@@ -5,7 +5,7 @@ using FinancialApp.Core.Entities;
 
 namespace FinancialApp.Core.Interfaces
 {
-    interface IAccountService
+    public interface IAccountService
     {
         ServiceResult<IReadOnlyList<Account>> GetAccounts();
         ServiceResult<Account> GetAccountById(long id);
