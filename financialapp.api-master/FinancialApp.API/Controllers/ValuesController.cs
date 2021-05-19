@@ -51,7 +51,7 @@ namespace FinancialApp.API.Controllers
 
         // GET api/values/5
         [HttpGet("/summary/expenses/{id}")]
-        public ActionResult<Double> GetExpenses(int id)
+        public ActionResult<double> GetExpenses(int id)
         {
             var account = _accountService.GetAccountById(id);
             var expenses = _transactionService.GetExpensesById(id);
@@ -65,7 +65,7 @@ namespace FinancialApp.API.Controllers
         }
         // GET api/values/5
         [HttpGet("/summary/incomes/{id}")]
-        public ActionResult<Double> GetIncomes(int id)
+        public ActionResult<double> GetIncomes(int id)
         {
             var account = _accountService.GetAccountById(id);
             var incomes = _transactionService.GetIncomesById(id);
@@ -78,7 +78,7 @@ namespace FinancialApp.API.Controllers
         }
         // GET api/values/5
         [HttpGet("/summary/total/{id}")]
-        public ActionResult<Double> GetTotal(int id)
+        public ActionResult<double> GetTotal(int id)
         {
             var account = _accountService.GetAccountById(id);
             var total = _transactionService.GetTotalById(id);
