@@ -1,0 +1,36 @@
+<div class="card" style="text-align: center;">
+    <div class="card-body">
+        <h2 class="card-title">
+            Resumen
+        </h2>
+        <hr>
+        <div class="card-text">
+            Income <span style="color:green">{{incomes | currency: "USD"}}</span>
+        </div>
+        <div class="card-text">
+            Expenses <span style="color:red">{{expenses | currency: "USD" }}</span>
+        </div>
+        <hr>
+        <div class="card-text" *ngIf="total > 0" >
+            Total  <span style="color:green">{{total | currency: "USD"}}</span>
+        </div>
+        <div class="card-text" *ngIf="total < 0" ng-style="{color: 'red'} ">
+            Total <span style="color:red">{{total | currency: "USD"}}</span>
+        </div>
+    </div>
+</div>
+
+<br>
+<hr>
+<br>
+
+<app-account-list></app-account-list>
+
+<br>
+<hr>
+<br>
+
+<app-transaction-list></app-transaction-list>
+<br>
+<br><br><br>
+<button type="button" class="btn btn-block btn-primary">Add Transaction</button>
