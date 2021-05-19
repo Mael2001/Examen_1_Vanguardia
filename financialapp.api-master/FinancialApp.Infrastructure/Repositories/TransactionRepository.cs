@@ -8,7 +8,7 @@ using FinancialApp.Data.Repositories;
 
 namespace FinancialApp.Infrastructure.Repositories
 {
-    class TransactionRepository : BaseRepository<Transaction>
+    public class TransactionRepository : BaseRepository<Transaction>
     {
         private readonly FinancialAppContext _financialAppContext;
 
