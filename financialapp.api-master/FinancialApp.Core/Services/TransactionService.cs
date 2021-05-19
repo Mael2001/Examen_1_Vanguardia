@@ -9,10 +9,13 @@ namespace FinancialApp.Core.Services
     public class TransactionService : ITransactionService
     {
         private readonly IRepository<Transaction> _transactionRepository;
+        private readonly IRepository<Account> _accountRepository;
 
-        public TransactionService(IRepository<Transaction> transactionRepository)
+        public TransactionService(IRepository<Transaction> transactionRepository,
+            IRepository<Account> accountRepository)
         {
             _transactionRepository = transactionRepository;
+            _accountRepository = accountRepository;
         }
         public ServiceResult<IReadOnlyList<Transaction>> GetTransactions()
         {
@@ -22,52 +25,41 @@ namespace FinancialApp.Core.Services
             return ServiceResult<IReadOnlyList<Transaction>>.SuccessResult(transactionsList);
         }
 
-        public ServiceResult<double> GetIncomesById(int id)
+        public ServiceResult<double> GetIncomes()
         {
             var transactions = _transactionRepository
-                .Filter(x => x.AccountId == id)
+                .Get()
                 .Where(x => x.Amount > 0)
                 .ToList();
-
-
-            if (transactions == null)
+            double incomes = 0;
+            foreach (Transaction transaction in transactions)
             {
-                return ServiceResult<double>.NotFoundResult($"No se encontró una cuenta con el id {id}");
+                incomes+= _accountRepository.Get(transaction.AccountId).ConversionRate * transaction.Amount;
             }
-            return ServiceResult<double>.SuccessResult(transactions.Sum(X=> Convert.ToInt32(X)));
+
+            return ServiceResult<double>.SuccessResult(incomes);
         }
 
-        public ServiceResult<double> GetExpensesById(int id)
+        public ServiceResult<double> GetExpenses()
         {
             var transactions = _transactionRepository
-                .Filter(x => x.AccountId == id)
+                .Get()
                 .Where(x => x.Amount < 0)
                 .ToList();
 
-            if (transactions == null)
+            double expenses = 0;
+            foreach (Transaction transaction in transactions)
             {
-                return ServiceResult<double>.NotFoundResult($"No se encontró una cuenta con el id {id}");
+                expenses += _accountRepository.Get(transaction.AccountId).ConversionRate * transaction.Amount;
             }
-            int expenses = transactions.Sum(X => Convert.ToInt32(X));
             return ServiceResult<double>.SuccessResult(expenses);
 
         }
 
-        public ServiceResult<Double> GetTotalById(int id)
+        public ServiceResult<double> GetTotal()
         {
-            var transactionsIncome = _transactionRepository
-                .Filter(x => x.AccountId == id)
-                .Where(x => x.Amount > 0).ToList();
-            var transactionsExpenses = _transactionRepository
-                .Filter(x => x.AccountId == id)
-                .Where(x => x.Amount < 0).ToList();
-
-            if (transactionsIncome == null)
-            {
-                return ServiceResult<double>.NotFoundResult($"No se encontró una cuenta con el id {id}");
-            }
-            int expenses = transactionsExpenses.Sum(X => Convert.ToInt32(X));
-            int incomes = transactionsIncome.Sum(X => Convert.ToInt32(X));
+            double expenses = GetExpenses().Result;
+            double incomes = GetIncomes().Result;
 
             return ServiceResult<double>.SuccessResult(incomes - expenses);
         }

@@ -8,9 +8,9 @@ namespace FinancialApp.Core.Interfaces
     interface ITransactionService
     {
         ServiceResult<IReadOnlyList<Transaction>> GetTransactions();
-        ServiceResult<double> GetIncomesById(int id);
-        ServiceResult<double> GetExpensesById(int id);
-        ServiceResult<double> GetTotalById(int id);
+        ServiceResult<double> GetIncomes();
+        ServiceResult<double> GetExpenses();
+        ServiceResult<double> GetTotal();
         ServiceResult<Transaction> CreateTransaction(Transaction entity);
     }
 }
